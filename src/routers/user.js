@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-const sharp = require("sharp");
+// const sharp = require("sharp");
 const User = require("../models/user");
 const auth = require("../middleware/auth");
 const { sendWelcomeEmail, sendGoodByeEmail } = require("../emails/account");
@@ -118,26 +118,27 @@ router.delete("/users/me", auth, async (req, res) => {
   }
 });
 
-router.post(
-  "/users/me/avatar",
-  auth,
-  upload.single("avatar"),
-  async (req, res) => {
-    const buffer = await sharp(req.file.buffer)
-      .resize({
-        width: 250,
-        height: 250,
-      })
-      .png()
-      .toBuffer();
-    req.user.avatar = buffer;
-    await req.user.save();
-    res.send();
-  },
-  (error, req, res, next) => {
-    res.status(400).send({ error: error.message });
-  }
-);
+// Removed sharp module, caused Heroku build to fail
+// router.post(
+//   "/users/me/avatar",
+//   auth,
+//   upload.single("avatar"),
+//   async (req, res) => {
+//     const buffer = await sharp(req.file.buffer)
+//       .resize({
+//         width: 250,
+//         height: 250,
+//       })
+//       .png()
+//       .toBuffer();
+//     req.user.avatar = buffer;
+//     await req.user.save();
+//     res.send();
+//   },
+//   (error, req, res, next) => {
+//     res.status(400).send({ error: error.message });
+//   }
+// );
 
 router.delete("/users/me/avatar", auth, async (req, res) => {
   req.user.avatar = undefined;
