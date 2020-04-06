@@ -1,3 +1,7 @@
 node_modules/
 config
 files
+npm-debug.log
+package-lock.json
+.DS_store
+/*.env
